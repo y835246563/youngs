@@ -16,8 +16,7 @@ class YsWeb extends YsBase {
     protected $_app;
 
     function __construct($config) {
-        Youngs::setApp($this);
-        $this->autoLoadFile($config);
+        parent::__construct($config);
     }
 
     /**
@@ -48,9 +47,10 @@ class YsWeb extends YsBase {
     }
 
     public function autoLoadFile($config) {
-
-        $coreArr = $this->get_all_files(YS_PATH . 'Core/');
-        $this->loadFiles($coreArr);
+        if (!class_exists('Youngs/Core/Route')) {
+            $coreArr = $this->get_all_files(YS_PATH . 'Core/');
+            $this->loadFiles($coreArr);
+        }
         $controllerArr = $this->get_all_files(SITE_CLASS_PATH . 'Controllers/');
         $this->loadFiles($controllerArr);
 

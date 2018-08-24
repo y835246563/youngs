@@ -7,14 +7,12 @@ namespace Youngs;
  * @Create Time:   2018-08-15 11:21:25
  * @Description:
  */
-use Youngs\Core\Route;
-use Youngs\Core\Request;
+
 use Youngs\Youngs;
 
 abstract class YsBase {
 
     public $config = [];
-    public $request = '';
 
     function __construct($config) {
         Youngs::setApp($this);
