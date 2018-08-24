@@ -8,6 +8,9 @@
             "name": "y83246563",
             "email": "youngshuo@qq.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {"Youngs":"src/Youngs"}
+    }
 
 }
