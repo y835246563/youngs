@@ -3,6 +3,7 @@
     "description": "own frame",
     "homepage": "http://github.com/y835246563/youngs",
     "license": "MIT",
+    "version": "1.0",
     "authors": [
         {
             "name": "y83246563",
@@ -10,7 +11,9 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Youngs":"src/Youngs"}
+        "psr-4": {
+            "Youngs\\": "src/Youngs"
+        }
     }
 
 }
