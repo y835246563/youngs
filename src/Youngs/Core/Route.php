@@ -24,8 +24,7 @@ class Route {
      */
     public function run() {
         $routeCfg = $this->getRouteConfig();
-        $route = $this->getRoute();
-
+        $route = $this->getCurrentRoute();
         if (isset($routeCfg[$route])) {
             $classArr = explode('@', $routeCfg[$route], 2);
             $className = 'App\Http\Controllers\\' . $classArr[0];
@@ -43,38 +42,52 @@ class Route {
      * @param type $urlPath
      * @return type
      */
-    public function getRoute($urlPath = null) {
+    public function getCurrentRoute($urlPath = null) {
         if ($this->_currentRoute === null) {
-            $routeCfg = $this->getRouteConfig();
-            if ($urlPath === null) {
-                $urlPath = Youngs::app()->request->getUrlPath();
-            }
-            if (isset($this->_routeConfig[$urlPath])) {
-                $this->_currentRoute = $urlPath;
-            } else {
-                $this->matchRoute($urlPath, $routeCfg);
-            }
+            $this->_currentRoute = $this->getRoute($urlPath);
+            Youngs::app()->request->setPathParams($this->_pathParams);
         }
         return $this->_currentRoute;
     }
 
     /**
-     * match the custom route,only use by Route::getRoute()
+     *  get the route 
+     * @param type $urlPath
+     * @return type
+     */
+    public function getRoute($urlPath = null) {
+        $routeCfg = $this->getRouteConfig();
+        if ($urlPath === null) {
+            $urlPath = Youngs::app()->request->getUrlPath();
+        }
+        if (isset($this->_routeConfig[$urlPath])) {
+            $currentRoute = $urlPath;
+        } else {
+            $currentRoute = $this->matchRoute2($urlPath, $routeCfg);
+        }
+        return $currentRoute;
+    }
+
+    /**
+     * match the custom route
      * @param type $urlPath
      * @param type $routeCfg
+     * @return type $currentRoute
      */
     protected function matchRoute($urlPath, $routeCfg) {
+        $route = null;
         $filterRouteCfg = array_filter($routeCfg, array($this, 'filterCustomRoute'));
         foreach ($filterRouteCfg as $route => $value) {
+            $this->_pathParams = [];
             $pattern = preg_replace_callback('/<([\w]*):?([^>]*)>/', array($this, 'setParamName'), $route);
             $pattern = '/' . preg_quote($pattern) . '/';
             $path = preg_replace_callback($pattern, array($this, 'setParamValue'), $urlPath);
             if ($path === '') {
-                $this->_currentRoute = $urlPath === '' ? '' : $route;
-                Youngs::app()->request->setPathParams($this->_currentRoute);
+                $route = ($urlPath === '') ? '' : $route;
                 break;
             }
         }
+        return $route;
     }
 
     /**
@@ -93,7 +106,7 @@ class Route {
      * @param type $matches
      * @return type
      */
-    protected function setParamName($matches) {
+    protected function setParamName($matches, $pathParams) {
         if ($matches[1] != '') {
             $this->_pathParams[$matches[1]] = null;
         }
@@ -145,10 +158,13 @@ class Route {
         $this->setRouteConfig();
         return $this->_routeConfig;
     }
-
+    /**
+     * set the routeconfig
+     * @param type $config
+     */
     public function setRouteConfig($config = null) {
         if (empty($this->_routeConfig)) {
-            $this->_routeConfig = empty($config) ? Youngs::app()->config['routeConfig'] : $config;
+            $this->_routeConfig = ($config === null) ? Youngs::app()->config['routeConfig'] : $config;
         } elseif (!empty($config)) {
             echo 'routeConfig has been set';
         }

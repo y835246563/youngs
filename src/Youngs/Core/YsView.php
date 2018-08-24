@@ -1,4 +1,3 @@
-@@ -0,0 +1,29 @@
 <?php
 
 namespace Youngs\Core;
