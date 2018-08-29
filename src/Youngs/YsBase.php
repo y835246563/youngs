@@ -7,7 +7,6 @@ namespace Youngs;
  * @Create Time:   2018-08-15 11:21:25
  * @Description:
  */
-
 use Youngs\Youngs;
 
 abstract class YsBase {
@@ -16,7 +15,20 @@ abstract class YsBase {
 
     function __construct($config) {
         Youngs::setApp($this);
+        $config = array_merge(config\YsConfig::getYsConfig(),$config);
         $this->autoLoadFile($config);
+    }
+
+    function __get($param) {
+        if (isset($this->$param) === false) {
+            if (isset($this->config['modulesArr'][$param])) {
+                $class = $this->config['modulesArr'][$param];
+            }else{
+                 $this->config['modulesArr'][$param];
+            }
+            $this->setModule($param, $class);
+        }
+        return $this->$param;
     }
 
     /**

@@ -119,7 +119,7 @@ class Request {
 
     public function setPathParams($params) {
         if (is_array($params))
-            $this->_pathParams = $param;
+            $this->_pathParams = $params;
     }
 
 }

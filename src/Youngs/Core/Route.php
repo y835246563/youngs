@@ -23,6 +23,13 @@ class Route {
      * 
      */
     public function run() {
+        $this->dealRoute();
+    }
+
+    /**
+     * 
+     */
+    public function dealRoute() {
         $routeCfg = $this->getRouteConfig();
         $route = $this->getCurrentRoute();
         if (isset($routeCfg[$route])) {
@@ -33,7 +40,7 @@ class Route {
             }
             $this->callMethod($className, $classArr[1]);
         } else {
-            echo ' there should redirect to 404 page';
+            echo 'the page not found; there should redirect to 404 page';
         }
     }
 
@@ -76,7 +83,7 @@ class Route {
      */
     protected function matchRoute($urlPath, $routeCfg) {
         $route = null;
-        $filterRouteCfg = array_filter($routeCfg, array($this, 'filterCustomRoute'));
+        $filterRouteCfg = array_filter($routeCfg, array($this, 'filterCustomRoute'),ARRAY_FILTER_USE_KEY);
         foreach ($filterRouteCfg as $route => $value) {
             $this->_pathParams = [];
             $pattern = preg_replace_callback('/<([\w]*):?([^>]*)>/', array($this, 'setParamName'), $route);
@@ -98,6 +105,8 @@ class Route {
     protected function filterCustomRoute($route) {
         if (strpos($route, '<') !== false) {
             return true;
+        }else{
+            return false;
         }
     }
 
@@ -106,7 +115,7 @@ class Route {
      * @param type $matches
      * @return type
      */
-    protected function setParamName($matches, $pathParams) {
+    protected function setParamName($matches) {
         if ($matches[1] != '') {
             $this->_pathParams[$matches[1]] = null;
         }
@@ -146,8 +155,17 @@ class Route {
             $parameters = $method->getParameters();
             $allParam = Youngs::app()->request->all();
             foreach ($parameters as $parameter) {
-                if (isset($params[$parameter->name]) === false) {
-                    $params[] = isset($allParam[$parameter->name]) ? $allParam[$parameter->name] : null;
+                $paramName = $parameter->name;
+                $defaultValue = null;
+                if (isset($params[$paramName]) === false) {
+                    if (null !== $parameter->getClass()) {
+                        $class = $parameter->getClass()->name;
+                        $defaultValue = new $class();
+                    }
+                    if ($parameter->isDefaultValueAvailable()) {
+                        $defaultValue = $parameter->getDefaultValue();
+                    }
+                    $params[] = isset($allParam[$paramName]) ? $allParam[$paramName] : $defaultValue;
                 }
             }
             call_user_func_array(array($classObj, $methodName), $params);
@@ -158,6 +176,7 @@ class Route {
         $this->setRouteConfig();
         return $this->_routeConfig;
     }
+
     /**
      * set the routeconfig
      * @param type $config

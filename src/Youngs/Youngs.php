@@ -17,13 +17,6 @@ class Youngs {
     protected static $_app;
 
     public static function app($module = null) {
-        if ($module !== null) {
-            if (isset(self::$_app->$module) === false) {
-                $class = $config['modulesArr'][$module];
-                self::$_app->setModule($module,$class);
-            }
-            return self::$_app->$module;
-        }
         return self::$_app;
     }
 

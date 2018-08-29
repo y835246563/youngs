@@ -23,11 +23,7 @@ class YsWeb extends YsBase {
      * 
      */
     public function run() {
-        $config['modulesArr'] = $modulesArr = array(
-            'request' => Core\Request::class,
-            'route' => Core\Route::class,
-        );
-        $this->setModules($modulesArr);
+
         Youngs::app()->route->run();
 //        var_dump([
 //            $_SERVER, //服务器和执行环境信息
