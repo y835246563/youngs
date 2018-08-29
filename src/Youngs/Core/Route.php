@@ -63,7 +63,7 @@ class Route {
         if (isset($this->_routeConfig[$urlPath])) {
             $currentRoute = $urlPath;
         } else {
-            $currentRoute = $this->matchRoute2($urlPath, $routeCfg);
+            $currentRoute = $this->matchRoute($urlPath, $routeCfg);
         }
         return $currentRoute;
     }

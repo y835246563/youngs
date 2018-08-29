@@ -23,7 +23,7 @@ class YsWeb extends YsBase {
      * 
      */
     public function run() {
-        $modulesArr = array(
+        $config['modulesArr'] = $modulesArr = array(
             'request' => Core\Request::class,
             'route' => Core\Route::class,
         );

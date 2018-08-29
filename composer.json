@@ -11,9 +11,13 @@
         }
     ],
     "autoload": {
+<<<<<<< HEAD
         "psr-4": {
             "Youngs\\": "src/Youngs"
         }
+=======
+        "psr-4": {"Youngs\\":"src/Youngs"}
+>>>>>>> f10a3007fd251c245cff5577f70d609e4abcc20c
     }
 
 }
