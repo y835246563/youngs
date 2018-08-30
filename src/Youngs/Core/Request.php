@@ -1,4 +1,5 @@
 <?php
+
 namespace Youngs\Core;
 
 /**
@@ -24,9 +25,6 @@ class Request {
 //    private $_preferredLanguages;
 //    private $_csrfToken;
 //    private $_restParams;
-
-
-
 
     public function all($name = null) {
         switch ($name) {

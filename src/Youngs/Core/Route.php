@@ -83,7 +83,7 @@ class Route {
      */
     protected function matchRoute($urlPath, $routeCfg) {
         $route = null;
-        $filterRouteCfg = array_filter($routeCfg, array($this, 'filterCustomRoute'),ARRAY_FILTER_USE_KEY);
+        $filterRouteCfg = array_filter($routeCfg, array($this, 'filterCustomRoute'), ARRAY_FILTER_USE_KEY);
         foreach ($filterRouteCfg as $route => $value) {
             $this->_pathParams = [];
             $pattern = preg_replace_callback('/<([\w]*):?([^>]*)>/', array($this, 'setParamName'), $route);
@@ -105,7 +105,7 @@ class Route {
     protected function filterCustomRoute($route) {
         if (strpos($route, '<') !== false) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -141,15 +141,17 @@ class Route {
      * @param type $params Description
      * @return boolean
      */
-    public function callMethod($className, $methodName = '', $params = []) {
-        if (empty($className) || empty($methodName)) {
-            return false;
-        }
+    public function callMethod($className, $methodName = null, $params = []) {
         if (class_exists($className)) {
             $classObj = new $className();
         } else {
             echo $className . ' is not exists';
         }
+        $params = $this->dealParameters($classObj, $methodName,$params);
+        call_user_func_array(array($classObj, $methodName), $params);
+    }
+
+    private function dealParameters($classObj, $methodName,$params) {
         if (method_exists($classObj, $methodName)) {
             $method = new \ReflectionMethod($className, $methodName);
             $parameters = $method->getParameters();
@@ -168,7 +170,9 @@ class Route {
                     $params[] = isset($allParam[$paramName]) ? $allParam[$paramName] : $defaultValue;
                 }
             }
-            call_user_func_array(array($classObj, $methodName), $params);
+        } else {
+            echo $methodName . 'not exists';
+            exit();
         }
     }
 

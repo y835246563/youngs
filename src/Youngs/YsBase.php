@@ -13,18 +13,19 @@ abstract class YsBase {
 
     public $config = [];
 
-    function __construct($config) {
+    function __construct($customConfig) {
         Youngs::setApp($this);
-        $config = array_merge(config\YsConfig::getYsConfig(),$config);
+        $config = array_merge(config\YsConfig::getYsConfig(), $customConfig);
         $this->autoLoadFile($config);
     }
 
+    
     function __get($param) {
         if (isset($this->$param) === false) {
             if (isset($this->config['modulesArr'][$param])) {
                 $class = $this->config['modulesArr'][$param];
-            }else{
-                 $this->config['modulesArr'][$param];
+            } else {
+                echo $param . " dont exist ";
             }
             $this->setModule($param, $class);
         }
@@ -54,8 +55,8 @@ abstract class YsBase {
      */
     public function get_all_files($path = SITE_CLASS_PATH) {
         $list = [];
-        $path = trim($path, '/');
-        $fileArr = glob($path . '/*');
+        $filepath = trim($path, '/');
+        $fileArr = glob($filepath . '/*');
         foreach ($fileArr as $filename) {
             if (is_dir($filename)) {
                 $list = array_merge($list, self::get_all_files($filename));
@@ -70,16 +71,21 @@ abstract class YsBase {
      * 
      */
     public function loadFiles($fileArr) {
-        $result = false;
+        $loadFlag = false;
         if (is_array($fileArr)) {
             $reArr = [];
             foreach ($fileArr as $filename) {
-                if ($this->loadFile($filename) === false)
+                if ($this->loadFile($filename) === false) {
                     $reArr[] = $filename;
+                }
             }
-            $result = true;
+            $loadFlag = true;
         }
-        $result = $result ? (empty($reArr) ? $result : $reArr) : $result;
+        if ($loadFlag === false || empty($reArr) == true) {
+            $result = $loadFlag;
+        } else {
+            $result = $reArr;
+        }
         return $result;
     }
 
