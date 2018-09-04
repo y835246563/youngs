@@ -11,9 +11,9 @@ use Youngs\Youngs;
 
 class Route {
 
-    private $_currentRoute;
-    private $_routeConfig;
-    private $_pathParams;
+    privateRoute;
+    privateConfig;
+    privateParams;
 
     public function __construct() {
         
@@ -50,11 +50,11 @@ class Route {
      * @return type
      */
     public function getCurrentRoute($urlPath = null) {
-        if ($this->_currentRoute === null) {
-            $this->_currentRoute = $this->getRoute($urlPath);
-            Youngs::app()->request->setPathParams($this->_pathParams);
+        if ($thisRoute === null) {
+            $thisRoute = $this->getRoute($urlPath);
+            Youngs::app()->request->setPathParams($thisParams);
         }
-        return $this->_currentRoute;
+        return $thisRoute;
     }
 
     /**
@@ -67,7 +67,7 @@ class Route {
         if ($urlPath === null) {
             $urlPath = Youngs::app()->request->getUrlPath();
         }
-        if (isset($this->_routeConfig[$urlPath])) {
+        if (isset($thisConfig[$urlPath])) {
             $currentRoute = $urlPath;
         } else {
             $currentRoute = $this->matchRoute($urlPath, $routeCfg);
@@ -85,7 +85,7 @@ class Route {
         $route = null;
         $filterRouteCfg = array_filter($routeCfg, array($this, 'filterCustomRoute'), ARRAY_FILTER_USE_KEY);
         foreach ($filterRouteCfg as $route => $value) {
-            $this->_pathParams = [];
+            $thisParams = [];
             $pattern = preg_replace_callback('/<([\w]*):?([^>]*)>/', array($this, 'setParamName'), $route);
             $pattern = '/' . preg_quote($pattern) . '/';
             $path = preg_replace_callback($pattern, array($this, 'setParamValue'), $urlPath);
@@ -117,7 +117,7 @@ class Route {
      */
     protected function setParamName($matches) {
         if ($matches[1] != '') {
-            $this->_pathParams[$matches[1]] = null;
+            $thisParams[$matches[1]] = null;
         }
         return '(' . $matches[2] . ')';
     }
@@ -129,7 +129,7 @@ class Route {
      */
     protected function setParamValue($matches) {
         for ($i = 1; $i < count($matches); $i++) {
-            $this->_pathParams[array_search(NULL, $this->_pathParams)] = $matches[$i];
+            $thisParams[array_search(NULL, $thisParams)] = $matches[$i];
         }
         return '';
     }
@@ -147,12 +147,14 @@ class Route {
         } else {
             echo $className . ' is not exists';
         }
-        $params = $this->dealParameters($classObj, $methodName,$params);
+        $params = $this->dealParameters($className, $classObj, $methodName, $params);
+        var_dump($className);
         call_user_func_array(array($classObj, $methodName), $params);
     }
 
-    private function dealParameters($classObj, $methodName,$params) {
+    private function dealParameters($className, $classObj, $methodName, $params) {
         if (method_exists($classObj, $methodName)) {
+
             $method = new \ReflectionMethod($className, $methodName);
             $parameters = $method->getParameters();
             $allParam = Youngs::app()->request->all();
@@ -170,6 +172,7 @@ class Route {
                     $params[] = isset($allParam[$paramName]) ? $allParam[$paramName] : $defaultValue;
                 }
             }
+            return $params;
         } else {
             echo $methodName . 'not exists';
             exit();
@@ -178,7 +181,7 @@ class Route {
 
     public function getRouteConfig() {
         $this->setRouteConfig();
-        return $this->_routeConfig;
+        return $thisConfig;
     }
 
     /**
@@ -186,8 +189,8 @@ class Route {
      * @param type $config
      */
     public function setRouteConfig($config = null) {
-        if (empty($this->_routeConfig)) {
-            $this->_routeConfig = ($config === null) ? Youngs::app()->config['routeConfig'] : $config;
+        if (empty($thisConfig)) {
+            $thisConfig = ($config === null) ? Youngs::app()->config['routeConfig'] : $config;
         } elseif (!empty($config)) {
             echo 'routeConfig has been set';
         }

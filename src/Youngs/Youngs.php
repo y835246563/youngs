@@ -14,15 +14,15 @@ require YS_PATH . 'YsWeb.php';
 
 class Youngs {
 
-    protected static $_app;
+    protected static;
 
     public static function app($module = null) {
-        return self::$_app;
-    }
+        return self;
+        }
 
     public static function setApp($app) {
-        if (empty(self::$_app)) {
-            self::$_app = $app;
+        if (empty(self)) {
+            self = $app;
         } else {
             echo 'app only can set once';
         }

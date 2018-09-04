@@ -9,6 +9,7 @@ namespace Youngs\Core;
  */
 use Youngs\Core\YsView;
 use Youngs\Youngs;
+
 class YsController {
 
     public function __construct() {
@@ -19,6 +20,5 @@ class YsController {
         $view = new YsView;
         $view->render($viewName, $data);
     }
-    
-    
+
 }

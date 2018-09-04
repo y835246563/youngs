@@ -11,20 +11,20 @@ use Youngs\Youngs;
 
 class Request {
 
-    private $_requestUri;
-    private $_urlPath;
-    private $_pathParams = [];
+    privateUri;
+    privatePath;
+    privateParams = [];
 
-//    private $_pathInfo;
-//    private $_scriptFile;
-//    private $_scriptUrl;
-//    private $_hostInfo;
-//    private $_baseUrl;
-//    private $_cookies;
-//    private $_preferredAcceptTypes;
-//    private $_preferredLanguages;
-//    private $_csrfToken;
-//    private $_restParams;
+//    privateInfo;
+//    privateFile;
+//    privateUrl;
+//    privateInfo;
+//    privateUrl;
+//    private;
+//    privateAcceptTypes;
+//    privateLanguages;
+//    privateToken;
+//    privateParams;
 
     public function all($name = null) {
         switch ($name) {
@@ -37,7 +37,7 @@ class Request {
                 break;
 
             case 'all':
-                return array_merge($_GET, $_POST, $this->_pathParams);
+                return array_merge($_GET, $_POST, $thisParams);
                 break;
 
             default:
@@ -55,42 +55,42 @@ class Request {
     }
 
     public function any($name, $defaultValue = null) {
-        return isset($this->_pathParams[$name]) ? $this->_pathParams[$name] : (isset($_POST[$name]) ? $_POST[$name] : (isset($_GET[$name]) ? $_GET[$name] : $defaultValue));
+        return isset($thisParams[$name]) ? $thisParams[$name] : (isset($_POST[$name]) ? $_POST[$name] : (isset($_GET[$name]) ? $_GET[$name] : $defaultValue));
 //        return isset($_POST[$name]) ? $_POST[$name] : (isset($_GET[$name]) ? $_GET[$name] : $defaultValue);
     }
 
     public function getPathParam($name, $defaultValue = null) {
-        return isset($this->_pathParams[$name]) ? $this->_pathParams[$name] : $defaultValue;
+        return isset($thisParams[$name]) ? $thisParams[$name] : $defaultValue;
     }
 
     public function getUri() {
-        if ($this->_requestUri === null) {
+        if ($thisUri === null) {
             if (isset($_SERVER['REQUEST_URI'])) {
-                $this->_requestUri = $_SERVER['REQUEST_URI'];
+                $thisUri = $_SERVER['REQUEST_URI'];
             } else {
-                $this->_requestUri = "can't get REQUEST_URI,\$_SERVER['REQUEST_URI'] is not set,please check this method";
+                $thisUri = "can't get REQUEST_URI,\$_SERVER['REQUEST_URI'] is not set,please check this method";
             }
         }
 
-        return $this->_requestUri;
+        return $thisUri;
     }
 
     public function getBaseUrl() {
 //        if (isset($_SERVER['HTTP_HOST'])) {
-//            $this->_baseUrl = '';
+//            $thisUrl = '';
 //        }
 //        return $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
 
     public function getUrlPath() {
-        if ($this->_urlPath === null) {
+        if ($thisPath === null) {
             $uri = $this->getUri();
             $path = explode('?', $uri, 2)[0];
             $path = str_replace('\\', '/', $path);
             $path = preg_replace('/\/+/', '/', $path);
-            $this->_urlPath = trim($path, '/');
+            $thisPath = trim($path, '/');
         }
-        return $this->_urlPath;
+        return $thisPath;
     }
 
     public function getUrlInfo($types = ['uri', 'baseUrl', 'urlPath']) {
@@ -117,7 +117,7 @@ class Request {
 
     public function setPathParams($params) {
         if (is_array($params))
-            $this->_pathParams = $params;
+            $thisParams = $params;
     }
 
 }

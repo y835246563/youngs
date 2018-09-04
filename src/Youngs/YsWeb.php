@@ -13,7 +13,7 @@ use Youngs\Youngs;
 class YsWeb extends YsBase {
 
     public $config = [];
-    protected $_app;
+    protected;
 
     function __construct($config) {
         parent::__construct($config);
@@ -23,7 +23,9 @@ class YsWeb extends YsBase {
      * 
      */
     public function run() {
-
+        $ysException = new \Youngs\Exceptions\YsException;
+        set_exception_handler([$ysException, 'write']);
+        set_error_handler([$ysException, 'error_write']);
         Youngs::app()->route->run();
 //        var_dump([
 //            $_SERVER, //服务器和执行环境信息

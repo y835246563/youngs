@@ -16,10 +16,10 @@ abstract class YsBase {
     function __construct($customConfig) {
         Youngs::setApp($this);
         $config = array_merge(config\YsConfig::getYsConfig(), $customConfig);
+
         $this->autoLoadFile($config);
     }
 
-    
     function __get($param) {
         if (isset($this->$param) === false) {
             if (isset($this->config['modulesArr'][$param])) {
