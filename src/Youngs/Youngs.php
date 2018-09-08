@@ -14,26 +14,37 @@ require YS_PATH . 'YsWeb.php';
 
 class Youngs {
 
-    protected static;
+	protected static $app;
 
-    public static function app($module = null) {
-        return self;
-        }
+	public static function app($module = null) {
+		return self::$app;
+	}
 
-    public static function setApp($app) {
-        if (empty(self)) {
-            self = $app;
-        } else {
-            echo 'app only can set once';
-        }
-    }
+	public static function setApp($app) {
+		if (empty(self::$app)) {
+			self::$app = $app;
+		} else {
+			echo 'app only can set once';
+		}
+	}
 
-    public function setYsWeb($config = null) {
-        return self::setClass('Youngs\YsWeb', $config);
-    }
+	/**
+	 * 设置web应用
+	 * @param type $config
+	 * @return type
+	 */
+	public function setYsWeb($config = null) {
+		return self::newApp('Youngs\YsWeb', $config);
+	}
 
-    public function setClass($class, $config = null) {
-        return new $class($config);
-    }
+	/**
+	 * 实例化应用
+	 * @param type $class
+	 * @param type $config
+	 * @return \Youngs\class
+	 */
+	public function newApp($class, $config = null) {
+		return new $class($config);
+	}
 
 }

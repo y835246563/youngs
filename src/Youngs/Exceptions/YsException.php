@@ -19,7 +19,7 @@ class YsException {
         \Youngs\Youngs::app()->log->error($message);
     }
 
-    public static function error_write($errno, $errstr, $errfile, $errline) {
+    public static function errorWrite($errno, $errstr, $errfile, $errline) {
         \Youngs\Youngs::app()->log->error($errstr);
     }
 

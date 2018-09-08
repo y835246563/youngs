@@ -11,9 +11,9 @@ use Youngs\Youngs;
 
 class Route {
 
-    privateRoute;
-    privateConfig;
-    privateParams;
+    private $currentRoute;
+    private $routeConfig;
+    private $pathParams;
 
     public function __construct() {
         
@@ -50,11 +50,11 @@ class Route {
      * @return type
      */
     public function getCurrentRoute($urlPath = null) {
-        if ($thisRoute === null) {
-            $thisRoute = $this->getRoute($urlPath);
-            Youngs::app()->request->setPathParams($thisParams);
+        if ($this->currentRoute === null) {
+            $this->currentRoute = $this->getRoute($urlPath);
+            Youngs::app()->request->setPathParams($this->pathParams);
         }
-        return $thisRoute;
+        return $this->currentRoute;
     }
 
     /**
@@ -67,7 +67,7 @@ class Route {
         if ($urlPath === null) {
             $urlPath = Youngs::app()->request->getUrlPath();
         }
-        if (isset($thisConfig[$urlPath])) {
+        if (isset($this->routeConfig[$urlPath])) {
             $currentRoute = $urlPath;
         } else {
             $currentRoute = $this->matchRoute($urlPath, $routeCfg);
@@ -85,7 +85,7 @@ class Route {
         $route = null;
         $filterRouteCfg = array_filter($routeCfg, array($this, 'filterCustomRoute'), ARRAY_FILTER_USE_KEY);
         foreach ($filterRouteCfg as $route => $value) {
-            $thisParams = [];
+            $this->pathParams = [];
             $pattern = preg_replace_callback('/<([\w]*):?([^>]*)>/', array($this, 'setParamName'), $route);
             $pattern = '/' . preg_quote($pattern) . '/';
             $path = preg_replace_callback($pattern, array($this, 'setParamValue'), $urlPath);
@@ -117,7 +117,7 @@ class Route {
      */
     protected function setParamName($matches) {
         if ($matches[1] != '') {
-            $thisParams[$matches[1]] = null;
+            $this->pathParams[$matches[1]] = null;
         }
         return '(' . $matches[2] . ')';
     }
@@ -129,7 +129,7 @@ class Route {
      */
     protected function setParamValue($matches) {
         for ($i = 1; $i < count($matches); $i++) {
-            $thisParams[array_search(NULL, $thisParams)] = $matches[$i];
+            $this->pathParams[array_search(NULL, $this->pathParams)] = $matches[$i];
         }
         return '';
     }
@@ -181,7 +181,7 @@ class Route {
 
     public function getRouteConfig() {
         $this->setRouteConfig();
-        return $thisConfig;
+        return $this->routeConfig;
     }
 
     /**
@@ -189,8 +189,8 @@ class Route {
      * @param type $config
      */
     public function setRouteConfig($config = null) {
-        if (empty($thisConfig)) {
-            $thisConfig = ($config === null) ? Youngs::app()->config['routeConfig'] : $config;
+        if (empty($this->routeConfig)) {
+            $this->routeConfig = ($config === null) ? Youngs::app()->config['routeConfig'] : $config;
         } elseif (!empty($config)) {
             echo 'routeConfig has been set';
         }

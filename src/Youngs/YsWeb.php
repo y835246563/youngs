@@ -12,21 +12,20 @@ use Youngs\Youngs;
 
 class YsWeb extends YsBase {
 
-    public $config = [];
-    protected;
+	public $config = [];
 
-    function __construct($config) {
-        parent::__construct($config);
-    }
+	function __construct($config) {
+		parent::__construct($config);
+	}
 
-    /**
-     * 
-     */
-    public function run() {
-        $ysException = new \Youngs\Exceptions\YsException;
-        set_exception_handler([$ysException, 'write']);
-        set_error_handler([$ysException, 'error_write']);
-        Youngs::app()->route->run();
+	/**
+	 * 
+	 */
+	public function run() {
+		$ysException = new \Youngs\Exceptions\YsException;
+		set_exception_handler([$ysException, 'write']);
+		set_error_handler([$ysException, 'errorWrite']);
+		Youngs::app()->route->run();
 //        var_dump([
 //            $_SERVER, //服务器和执行环境信息
 //            $_GET, //HTTP GET 变量
@@ -42,18 +41,18 @@ class YsWeb extends YsBase {
 ////            $argc, //传递给脚本的参数数目
 ////            $argv, //传递给脚本的参数数组
 //        ]);
-    }
+	}
 
-    public function autoLoadFile($config) {
-        if (!class_exists('Youngs/Core/Route')) {
-            $coreArr = $this->get_all_files(YS_PATH . 'Core/');
-            $this->loadFiles($coreArr);
-        }
-        $controllerArr = $this->get_all_files(SITE_CLASS_PATH . 'Controllers/');
-        $this->loadFiles($controllerArr);
+	public function autoLoadFile($config) {
+		if (!class_exists('Youngs/Core/Route')) {
+			$coreArr = $this->get_all_files(YS_PATH . 'Core/');
+			$this->loadFiles($coreArr);
+		}
+		$controllerArr = $this->get_all_files(SITE_CLASS_PATH . 'Controllers/');
+		$this->loadFiles($controllerArr);
 
-        $config[] = ['controllerArr' => $controllerArr];
-        $this->config = $config;
-    }
+		$config[] = ['controllerArr' => $controllerArr];
+		$this->config = $config;
+	}
 
 }
