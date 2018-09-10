@@ -72,7 +72,7 @@ abstract class YsBase {
 		$fileArr = glob($filepath . '/*');
 		foreach ($fileArr as $filename) {
 			if (is_dir($filename)) {
-				$list = array_merge($list, self::get_all_files($filename));
+				$list = array_merge($list, $this->get_all_files($filename));
 			} else {
 				$list[] = $filename;
 			}

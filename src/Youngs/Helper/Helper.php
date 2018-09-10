@@ -91,8 +91,15 @@ if (!function_exists('array_multi_search')) {
 }
 
 /**
- * string helper
+ * url helper
  */
+if (!function_exists('site_url')) {
+
+    function site_url($uri) {
+        
+    }
+
+}
 if (!function_exists('redirect')) {
 
     /**
@@ -134,6 +141,14 @@ if (!function_exists('redirect')) {
                 break;
         }
         exit;
+    }
+
+}
+
+if (!function_exists('app')) {
+
+    function app($module = null) {
+        return Youngs\Youngs::app($module);
     }
 
 }
