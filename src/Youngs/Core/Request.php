@@ -65,14 +65,14 @@ class Request {
         return $this->requestUri;
     }
 
-    public function getBaseUrl() {
+    public function getBaseUrl($uri = '') {
 
         if (null === $this->basUrl) {
             if (isset($_SERVER['HTTP_HOST'])) {
                 $this->baseUrl = $_SERVER['HTTP_HOST'];
             }
         }
-        return $this->baseUrl;
+        return $this->baseUrl . $uri;
     }
 
     public function getUrlPath() {
@@ -109,8 +109,9 @@ class Request {
     }
 
     public function setPathParams($params) {
-        if (is_array($params))
+        if (is_array($params)) {
             $this->pathParams = $params;
+        }
     }
 
 }

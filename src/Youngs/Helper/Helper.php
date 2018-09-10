@@ -96,7 +96,7 @@ if (!function_exists('array_multi_search')) {
 if (!function_exists('site_url')) {
 
     function site_url($uri) {
-        
+        return app('request')->getBaseUrl($uri);
     }
 
 }

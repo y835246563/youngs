@@ -16,14 +16,14 @@ class Youngs {
 
     public static function app($module = null) {
         if (null !== $module) {
-            return $this->app->$module;
+            return self::$app->$module;
         }
-        return $this->app;
+        return self::$app;
     }
 
     public static function setApp($app) {
-        if (empty($this->app)) {
-            $this->app = $app;
+        if (empty(self::$app)) {
+            self::$app = $app;
         } else {
             echo 'app only can set once';
         }

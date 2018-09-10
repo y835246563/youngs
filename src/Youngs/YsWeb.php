@@ -26,6 +26,7 @@ class YsWeb extends YsBase {
 		set_exception_handler([$ysException, 'write']);
 		set_error_handler([$ysException, 'errorWrite']);
 		Youngs::app()->route->run();
+                var_dump(site_url('/333'));
 //        var_dump([
 //            $_SERVER, //服务器和执行环境信息
 //            $_GET, //HTTP GET 变量
@@ -45,7 +46,7 @@ class YsWeb extends YsBase {
 
 	public function autoLoadFile($config) {
 		if (!class_exists('Youngs/Core/Route')) {
-			$coreArr = $this->get_all_files(YS_PATH . 'Core/');
+			$coreArr = $this->get_all_files(YS_PATH . '');
 			$this->loadFiles($coreArr);
 		}
 		$controllerArr = $this->get_all_files(SITE_CLASS_PATH . 'Controllers/');
