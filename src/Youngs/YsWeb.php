@@ -26,7 +26,11 @@ class YsWeb extends YsBase {
 		set_exception_handler([$ysException, 'write']);
 		set_error_handler([$ysException, 'errorWrite']);
 		Youngs::app()->route->run();
+<<<<<<< HEAD
 		shuffle_assoc([123]);
+=======
+                var_dump(site_url('/333'));
+>>>>>>> f1304348d108071591463b5fa6aa6e36cf9cac21
 //        var_dump([
 //            $_SERVER, //服务器和执行环境信息
 //            $_GET, //HTTP GET 变量

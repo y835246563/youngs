@@ -4,6 +4,14 @@
  * @Create Time:   2018-09-06 10:24:39
  * @Description:
  */
+if (!function_exists('app')) {
+
+    function app($module = null) {
+        return Youngs\Youngs::app($module);
+    }
+
+}
+
 /**
  * array_helper
  */
@@ -25,7 +33,6 @@ if (!function_exists('shuffle_assoc')) {
 
 }
 
-
 if (!function_exists('array_multi_to_single')) {
 
     /**
@@ -34,7 +41,7 @@ if (!function_exists('array_multi_to_single')) {
      * @return	mixed	depends on what the array contains
      */
     function array_multi_to_single(array $array, $pattern = null, $resultArr = [], $parentKey = null) {
-        array_walk($array, function ($value, $key )use( &$resultArr, $parentKey) {
+        array_walk($array, function ($value, $key )use( $pattern, &$resultArr, $parentKey) {
             if (null !== $pattern && null !== $parentKey) {
                 $key = $parentKey . $pattern . $key;
             }
@@ -48,7 +55,6 @@ if (!function_exists('array_multi_to_single')) {
     }
 
 }
-
 
 if (!function_exists('array_multi_search')) {
 
@@ -90,9 +96,18 @@ if (!function_exists('array_multi_search')) {
 
 }
 
+
 /**
- * string helper
+ * url helper
  */
+if (!function_exists('site_url')) {
+
+    function site_url($uri) {
+        return Youngs\Youngs::app()->request->getBaseUrl($uri);
+    }
+
+}
+
 if (!function_exists('redirect')) {
 
     /**
@@ -136,4 +151,8 @@ if (!function_exists('redirect')) {
         exit;
     }
 
+}
+
+if (!function_exists('')) {
+    
 }
