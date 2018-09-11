@@ -46,7 +46,6 @@ class Request {
 
     public function any($name, $defaultValue = null) {
         return isset($this->pathParams[$name]) ? $this->pathParams[$name] : (isset($_POST[$name]) ? $_POST[$name] : (isset($_GET[$name]) ? $_GET[$name] : $defaultValue));
-//        return isset($_POST[$name]) ? $_POST[$name] : (isset($_GET[$name]) ? $_GET[$name] : $defaultValue);
     }
 
     public function getPathParam($name, $defaultValue = null) {

@@ -148,13 +148,11 @@ class Route {
             echo $className . ' is not exists';
         }
         $params = $this->dealParameters($className, $classObj, $methodName, $params);
-        var_dump($className);
         call_user_func_array(array($classObj, $methodName), $params);
     }
 
     private function dealParameters($className, $classObj, $methodName, $params) {
         if (method_exists($classObj, $methodName)) {
-
             $method = new \ReflectionMethod($className, $methodName);
             $parameters = $method->getParameters();
             $allParam = Youngs::app()->request->all();
@@ -162,10 +160,12 @@ class Route {
                 $paramName = $parameter->name;
                 $defaultValue = null;
                 if (isset($params[$paramName]) === false) {
+                    //判断是否为类属性
                     if (null !== $parameter->getClass()) {
                         $class = $parameter->getClass()->name;
                         $defaultValue = new $class();
                     }
+                    //判断是否有默认值
                     if ($parameter->isDefaultValueAvailable()) {
                         $defaultValue = $parameter->getDefaultValue();
                     }

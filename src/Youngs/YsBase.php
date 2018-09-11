@@ -15,12 +15,12 @@ abstract class YsBase {
 
     function __construct($customConfig) {
         Youngs::setApp($this);
-        $config = array_merge(config\YsConfig::getYsConfig(), $customConfig);
+        $config = array_replace_recursive(config\YsConfig::getYsConfig(), $customConfig);
         $this->autoLoadFile($config);
     }
 
     /**
-     * will  start modules when the modules not set
+     * will  new modules when the modules not set
      * @param type $param
      * @return type
      */
