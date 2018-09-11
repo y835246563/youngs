@@ -9,13 +9,13 @@ namespace Youngs\Config;
  */
 class YsConfig {
 
-    public static function getYsConfig() {
-        $ysConfig['modulesArr'] = array(
-            'request' => \Youngs\Core\Request::class,
-            'route' => \Youngs\Core\Route::class,
-            'log' => \Youngs\log\Writer::class,
-        );
-        return $ysConfig;
-    }
+	public static function getYsConfig() {
+		$ysConfig['modulesArr'] = array(
+			'request' => \Youngs\Core\Request::class,
+			'route' => \Youngs\Core\Route::class,
+			'log' => \Youngs\log\Writer::class,
+		);
+		return $ysConfig;
+	}
 
 }
